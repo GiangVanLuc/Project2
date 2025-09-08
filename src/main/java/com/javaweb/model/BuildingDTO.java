@@ -4,6 +4,10 @@ public class BuildingDTO {
 	private String name;
 	private Integer numberOfBasement;
 	private String address;
+	private String managerName;
+	private String managerPhoneNumber;
+	private Integer floorarea;
+	
 	public String getName() {
 		return name;
 	}
