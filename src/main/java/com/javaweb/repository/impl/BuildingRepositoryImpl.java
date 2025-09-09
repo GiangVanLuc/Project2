@@ -12,15 +12,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.deser.impl.BeanAsArrayBuilderDeserializer;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
+import com.javaweb.utils.ConnectionJDBCUtil;
 import com.javaweb.utils.NumberUtil;
 import com.javaweb.utils.StringUtil;
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
-	static final String DB_URL = "jdbc:mysql://localhost:3306/estatebasic";
-	static final String USER = "root";
-	static final String PASS = "123456";
+	
 	
 	public static void joinTable(Map<String, Object> params, List<String> typeCode, StringBuilder sql) {
 		String staffId = (String)params.get("staffId");
@@ -103,7 +103,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		where.append(" GROUP BY b.id;");
 		sql.append(where);
 		List<BuildingEntity> result = new ArrayList<>();
-		try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		try(Connection conn = ConnectionJDBCUtil.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql.toString());){
 			
@@ -117,9 +117,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				buildingEntity.setFloorArea(rs.getLong("b.floorarea"));
 				buildingEntity.setRentPrice(rs.getLong("b.rentprice"));
 				buildingEntity.setServiceFee(rs.getString("b.servicefee"));
-				buildingEntity.setBrokeerageFee(rs.getLong("b.brokeragefee"));
+				buildingEntity.setBrokerageFee(rs.getLong("b.brokeragefee"));
 				buildingEntity.setManagerName(rs.getString("b.managername"));
 				buildingEntity.setManagerPhoneNumber(rs.getString("b.managerphonenumber"));
+				buildingEntity.setNumberofbasement(rs.getLong("b.numberofbasement"));
+
 				result.add(buildingEntity);
 				
 			}

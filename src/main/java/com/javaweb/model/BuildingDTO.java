@@ -6,11 +6,12 @@ public class BuildingDTO {
 	private String managerName;
 	private String managerPhoneNumber;
 	private Long floorarea;
-	private String rentArea;
+	private String rentArea; // "100, 200, 300"
 	private String emptyArea;
 	private Long rentPrice;
 	private String serviceFee;
 	private Long brokerageFee;
+	private Long numberOfBasement;
 	
 	public String getName() {
 		return name;
@@ -72,6 +73,12 @@ public class BuildingDTO {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public Long getNumberOfBasement() {
+		return numberOfBasement;
+	}
+	public void setNumberOfBasement(Long numberOfBasement) {
+		this.numberOfBasement = numberOfBasement;
 	}
 	
 	

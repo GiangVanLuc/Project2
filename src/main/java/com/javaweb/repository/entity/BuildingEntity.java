@@ -10,10 +10,18 @@ public class BuildingEntity {
 	private String emptyArea;
 	private Long rentPrice;
 	private String serviceFee;
-	private long brokeerageFee;
+	private long brokerageFee;
 	private String managerName;
 	private String managerPhoneNumber;
-
+	private Long numberOfBasement;
+	
+	
+	public Long getNumberofbasement() {
+		return numberOfBasement;
+	}
+	public void setNumberofbasement(Long numberOfBasement) {
+		this.numberOfBasement = numberOfBasement;
+	}
 	public String getName() {
 		return name;
 	}
@@ -81,11 +89,11 @@ public class BuildingEntity {
 	public void setServiceFee(String serviceFee) {
 		this.serviceFee = serviceFee;
 	}
-	public long getBrokeerageFee() {
-		return brokeerageFee;
+	public long getBrokerageFee() {
+		return brokerageFee;
 	}
-	public void setBrokeerageFee(long brokeerageFee) {
-		this.brokeerageFee = brokeerageFee;
+	public void setBrokerageFee(long brokerageFee) {
+		this.brokerageFee = brokerageFee;
 	}
 	
 	
