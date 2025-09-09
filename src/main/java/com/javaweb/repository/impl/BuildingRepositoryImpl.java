@@ -2,17 +2,16 @@ package com.javaweb.repository.impl;
 
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.deser.impl.BeanAsArrayBuilderDeserializer;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.entity.BuildingEntity;
 import com.javaweb.utils.ConnectionJDBCUtil;
@@ -31,11 +30,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			sql.append(" INNER JOIN buildingrenttype ON b.id = buildingrenttype.buildingid ");
 			sql.append(" INNER JOIN renttype ON renttype.id = buildingrenttype.renttypeid ");
 		}
-		String rentAreaTo = (String)params.get("areaTo");
-		String rentAreaFrom = (String)params.get("areaFrom");
-		if(StringUtil.checkString(rentAreaTo)|| StringUtil.checkString(rentAreaFrom)) {
-			sql.append(" INNER JOIN rentarea ON rentarea.buildingid = b.id ");
-		}
+//		String rentAreaTo = (String)params.get("areaTo");
+//		String rentAreaFrom = (String)params.get("areaFrom");
+//		if(StringUtil.checkString(rentAreaTo)|| StringUtil.checkString(rentAreaFrom)) {
+//			sql.append(" INNER JOIN rentarea ON rentarea.buildingid = b.id ");
+//		}
 	}
 	
 	public static void queryNomal(Map<String, Object> params, StringBuilder where) {
@@ -62,13 +61,14 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		String rentAreaTo = (String)params.get("areaTo");
 		String rentAreaFrom = (String)params.get("areaFrom");
 		if(StringUtil.checkString(rentAreaTo)|| StringUtil.checkString(rentAreaFrom)) {
+			where.append(" AND EXISTS (SELECT * FROM rentarea r where b.id = r.buildingid ");
 			if(StringUtil.checkString(rentAreaFrom)) {
-				where.append(" AND rentarea.value >=" + rentAreaFrom);
+				where.append(" AND r.value >=" + rentAreaFrom);
 			}
 			if(StringUtil.checkString(rentAreaTo)) {
-				where.append(" AND rentarea.value <=" + rentAreaTo);
+				where.append(" AND r.value <=" + rentAreaTo);
 			}
-			
+			where.append(") ");
 		}
 		
 		String rentPriceTo = (String)params.get("rentPriceTo");
@@ -81,16 +81,25 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				where.append(" AND b.rentprice <=" + rentPriceTo);
 			}
 			
+			
 		}
 		
 		// java 7
+//		if(typeCode != null && typeCode.size() != 0) {
+//			List<String> code = new ArrayList<>();
+//			for(String item: typeCode) {
+//				code.add("'" + item + "'");
+//			}
+//			where.append(" AND renttype.code IN(" + String.join(",", code) + ")");
+//		}
+		// java 8
 		if(typeCode != null && typeCode.size() != 0) {
-			List<String> code = new ArrayList<>();
-			for(String item: typeCode) {
-				code.add("'" + item + "'");
-			}
-			where.append(" AND renttype.code IN(" + String.join(",", code) + ")");
+			where.append(" AND(");
+			String sql = typeCode.stream().map(it -> "renttype.code Like" + "'%" + it + "%'").collect(Collectors.joining(" OR "));
+			where.append(sql);
+			where.append(" ) ");
 		}
+		
 	}
 	
 	@Override

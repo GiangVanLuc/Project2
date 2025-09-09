@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.javaweb.converter.BuildingDTOConverter;
 import com.javaweb.model.BuildingDTO;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.DistrictRepository;
@@ -25,10 +26,8 @@ public class BuildingServiceImpl implements BuildingService {
 	private BuildingRepository buildingRepository;
 	
 	@Autowired
-	private DistrictRepository districtRepository;
+	private BuildingDTOConverter buildingDTOConverter;
 	
-	@Autowired
-	private RentAreaRepository rentAreaRepository;
 	
 	@Override
 	public List<BuildingDTO> findAll(Map<String,Object> params, List<String> typeCode) {
@@ -37,21 +36,7 @@ public class BuildingServiceImpl implements BuildingService {
 		List<BuildingEntity> buildingEntities = buildingRepository.findAll(params, typeCode);
 		List<BuildingDTO> result = new ArrayList<>();
 		for(BuildingEntity item: buildingEntities) {
-			BuildingDTO building = new BuildingDTO();
-			building.setName(item.getName());
-			DistrictEntity districtEntity = districtRepository.findNameById(item.getDistrictId());
-			building.setAddress(item.getStreet() + ", " + item.getWard() + "," + districtEntity.getName());
-			List<RentAreaEntity> rentAreas = rentAreaRepository.getValueByBuildingId(item.getId());
-			String areaResult = rentAreas.stream().map(it -> it.getValue().toString()).collect(Collectors.joining(","));
-			building.setRentArea(areaResult);
-			building.setNumberOfBasement(item.getNumberofbasement());
-			building.setManagerName(item.getManagerName());
-			building.setManagerPhoneNumber(item.getManagerPhoneNumber());
-			building.setFloorarea(item.getFloorArea());
-			building.setEmptyArea(item.getEmptyArea());
-			building.setRentPrice(item.getRentPrice());
-			building.setServiceFee(item.getServiceFee());
-			building.setBrokerageFee(item.getBrokerageFee());
+			BuildingDTO building = buildingDTOConverter.toBuildingDTO(item);
 			result.add(building);
 		}
 		return result;
