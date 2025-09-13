@@ -39,6 +39,9 @@ public class BuildingAPI {
 //		System.out.println("ok");
 //	}
 //	
+	
+//	@PostMapping(value = "/api/building/")
+//	public void createBuilding(@RequestBody)
 	@DeleteMapping(value ="/api/building/{id}")
 	public void deleteBuilding(@PathVariable Integer id) {
 		System.out.println("Da xoa toa nha co id la" + id + " roi nhe!");

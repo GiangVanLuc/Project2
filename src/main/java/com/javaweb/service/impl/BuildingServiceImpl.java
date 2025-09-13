@@ -39,7 +39,7 @@ public class BuildingServiceImpl implements BuildingService {
 		List<BuildingEntity> buildingEntities = buildingRepository.findAll(buildingSearchBuilder);
 		List<BuildingDTO> result = new ArrayList<>();
 		for(BuildingEntity item: buildingEntities) {
-			BuildingDTO building = buildingDTOConverter.toBuildingDTO(item);
+			BuildingDTO building = buildingDTOConverter.toBuildingDTO(item); // chuyen doi tu tang service len model
 			result.add(building);
 		}
 		return result;
