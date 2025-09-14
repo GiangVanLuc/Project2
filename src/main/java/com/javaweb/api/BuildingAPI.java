@@ -7,15 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.javaweb.converter.BuildingRequestDTO;
 import com.javaweb.model.BuildingDTO;
+import com.javaweb.repository.BuildingRepository;
+import com.javaweb.repository.entity.BuildingEntity;
+import com.javaweb.repository.entity.DistrictEntity;
 import com.javaweb.service.BuildingService;
 
 
 @RestController
 public class BuildingAPI {
+	@Autowired
+	private BuildingRepository buildingRepository;
 	
 	@Autowired
 	private BuildingService buildingService;
@@ -23,27 +31,40 @@ public class BuildingAPI {
 	@GetMapping(value ="/api/building/")
 	public List<BuildingDTO> getBuilding(@RequestParam Map<String,Object> params,
 										@RequestParam(name = "typeCode", required = false) List<String> typeCode) {
-										
-		
 		List<BuildingDTO> result = buildingService.findAll(params, typeCode);
 		return result; 
-		
 	}
-//	public void valiDate(BuildingDTO buildingDTO) {
-//		if(buildingDTO.getName() == null || buildingDTO.getName().equals("") || buildingDTO.getNumberOfBasement() == null) {
-//			throw new FieldRequiredException("name or numberofbasement is null");
-//		}
+	
+//	@GetMapping(value ="/api/building/{name}")
+//	public BuildingDTO getBuildingById(@PathVariable String name) {
+//										
+//		BuildingDTO result = new BuildingDTO();
+//		List<BuildingEntity> building = buildingRepository.findByNameContaining(name);
+//		return result;
 //	}
+	
+	
+
 //	@PostMapping(value = "/api/building/")
 //	public void getBuilding2(@RequestBody BuildingDTO buildingDTO) {
 //		System.out.println("ok");
 //	}
 //	
 	
-//	@PostMapping(value = "/api/building/")
-//	public void createBuilding(@RequestBody)
-	@DeleteMapping(value ="/api/building/{id}")
-	public void deleteBuilding(@PathVariable Integer id) {
-		System.out.println("Da xoa toa nha co id la" + id + " roi nhe!");
+//	@PutMapping(value = "/api/building/")
+//	public void updateBuilding(@RequestBody BuildingRequestDTO buildingRequestDTO) {
+//		BuildingEntity buildEntity = buildingRepository.findById(buildingRequestDTO.getId()).get();
+//		buildEntity.setName(buildingRequestDTO.getName());
+//		buildEntity.setStreet(buildingRequestDTO.getStreet());
+//		buildEntity.setWard(buildingRequestDTO.getWard());
+//		DistrictEntity districtEntity = new DistrictEntity();
+//		districtEntity.setId(buildingRequestDTO.getDistrictId());
+//		buildEntity.setDistrict(districtEntity);
+//		buildingRepository.save(buildEntity);
+//		
+//	}
+	@DeleteMapping(value ="/api/building/{ids}")
+	public void deleteBuilding(@PathVariable Long[] ids) {
+		buildingRepository.deleteByIdIn(ids);
 	}
 }

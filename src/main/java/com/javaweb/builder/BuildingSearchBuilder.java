@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingSearchBuilder {
+	
 	private String name;
 	private Long floorArea;
 	private String ward;
@@ -18,6 +19,8 @@ public class BuildingSearchBuilder {
 	private Long areaFrom;
 	private Long areaTo;
 	private Long staffId;
+	private String level;
+	private String direction;
 	
 	
 	
@@ -36,6 +39,8 @@ public class BuildingSearchBuilder {
         this.areaFrom = builder.areaFrom;
         this.areaTo = builder.areaTo;
         this.staffId = builder.staffId;
+        this.level = builder.level;
+        this.direction = builder.direction;
 	}
 	public String getName() {
 		return name;
@@ -79,6 +84,19 @@ public class BuildingSearchBuilder {
 	public Long getDistrictId() {
 		return districtId;
 	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
+	public String getDirection() {
+		return direction;
+	}
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
 
 
 
@@ -97,6 +115,8 @@ public class BuildingSearchBuilder {
 		private Long areaFrom;
 		private Long areaTo;
 		private Long staffId;
+		private String level;
+		private String direction;
 		public Builder setName(String name) {
 			this.name = name;
 			return this;
@@ -152,6 +172,18 @@ public class BuildingSearchBuilder {
 		public Builder setStaffId(Long staffId) {
 			this.staffId = staffId;
 			return this;
+		}
+		public String getLevel() {
+			return level;
+		}
+		public void setLevel(String level) {
+			this.level = level;
+		}
+		public String getDirection() {
+			return direction;
+		}
+		public void setDirection(String direction) {
+			this.direction = direction;
 		}
 		public BuildingSearchBuilder build() {
             return new BuildingSearchBuilder(this);
