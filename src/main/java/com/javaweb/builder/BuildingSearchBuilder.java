@@ -87,14 +87,8 @@ public class BuildingSearchBuilder {
 	public String getLevel() {
 		return level;
 	}
-	public void setLevel(String level) {
-		this.level = level;
-	}
 	public String getDirection() {
 		return direction;
-	}
-	public void setDirection(String direction) {
-		this.direction = direction;
 	}
 
 
@@ -173,17 +167,14 @@ public class BuildingSearchBuilder {
 			this.staffId = staffId;
 			return this;
 		}
-		public String getLevel() {
-			return level;
-		}
-		public void setLevel(String level) {
+		public Builder setLevel(String level) {
 			this.level = level;
+			return this;
 		}
-		public String getDirection() {
-			return direction;
-		}
-		public void setDirection(String direction) {
+		
+		public Builder setDirection(String direction) {
 			this.direction = direction;
+			return this;
 		}
 		public BuildingSearchBuilder build() {
             return new BuildingSearchBuilder(this);
